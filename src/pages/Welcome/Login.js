@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   useSendPasswordResetEmail,
   useSignInWithEmailAndPassword,
@@ -6,13 +6,19 @@ import {
 import { useForm } from "react-hook-form";
 import { BiLock } from "react-icons/bi";
 import { HiOutlineMail } from "react-icons/hi";
+import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import PrimaryButton from "../../components/Button/PrimaryButton";
 import Loading from "../../components/Loading/Loading";
 import auth from "../../firebase-init";
 import usePasswordToggle from "../../hooks/usePasswordToggle";
+import apiClient from "../../hooks/apiClient";
 
 const Login = ({ setAuthentication }) => {
+  const [token, setToken] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
   const [sendPasswordResetEmail, sending, resetError] =
@@ -25,8 +31,14 @@ const Login = ({ setAuthentication }) => {
   } = useForm();
   const [inputType, icon] = usePasswordToggle();
 
-  const onSubmit = (data) => {
-    signInWithEmailAndPassword(data.email, data.password);
+  const onSubmit = async (data) => {
+    await signInWithEmailAndPassword(data.email, data.password);
+    const res = await apiClient.post("/user/get-token", {
+      email: data.email,
+    });
+    const secret_token = res?.data?.token;
+    setToken(secret_token);
+    localStorage.setItem("token", secret_token);
   };
 
   const handleResetPassword = async () => {
@@ -46,8 +58,14 @@ const Login = ({ setAuthentication }) => {
     }
   };
 
+  useEffect(() => {
+    if (token) {
+      navigate(from, { replace: true });
+    }
+  }, [token, navigate, from]);
+
   if (loading) {
-    return <Loading />;             
+    return <Loading />;
   }
 
   if (error || resetError) {
