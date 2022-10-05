@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import RequireAuth from "./hooks/RequireAuth";
+import AddClient from "./pages/ClientMaster/AddClient";
 import ClientMaster from "./pages/ClientMaster/ClientMaster";
+import ViewClients from "./pages/ClientMaster/ViewClients";
 import Welcome from "./pages/Welcome/Welcome";
 
 function App() {
@@ -14,7 +16,10 @@ function App() {
               <ClientMaster />
             </RequireAuth>
           }
-        />
+        >
+          <Route index element={<ViewClients />} />
+          <Route path="add-client" element={<AddClient />} />
+        </Route>
         <Route path="/start" element={<Welcome />} />
       </Routes>
     </>
