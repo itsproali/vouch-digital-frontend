@@ -154,6 +154,7 @@ const ViewClients = () => {
               {clients?.map((client) => {
                 const {
                   _id,
+                  logo,
                   companyName,
                   email,
                   phone,
@@ -168,9 +169,13 @@ const ViewClients = () => {
                   <tr key={_id} className="py-6 border-b-accent">
                     <td>
                       <div className="flex items-center gap-3">
-                        <span className="w-9 h-9 rounded-full bg-accent text-lg flex items-center justify-center">
-                          {companyName?.slice(0, 1)}
-                        </span>
+                        
+                          {logo ? (
+                            <img src={logo} alt="logo" className="w-9 h-9 rounded-full" />
+                          ) : (
+                            <span className="w-9 h-9 rounded-full bg-accent text-lg flex items-center justify-center">{companyName?.slice(0, 1) }</span>
+                          )}
+                       
                         <span>{companyName || "--"}</span>
                       </div>
                     </td>
