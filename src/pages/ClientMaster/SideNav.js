@@ -27,7 +27,7 @@ const SideNav = () => {
     { title: "Add Client", path: "/add-client" },
   ];
   return (
-    <div className="flex flex-col justify-between bg-white h-screen px-4 py-6">
+    <div className="flex flex-col justify-between bg-white h-screen px-4 py-6 sticky top-0 left-0">
       <div className="">
         <h1 className="text-xl font-semibold mb-4">Vouch Digital</h1>
         <div className="w-full relative mb-4">
