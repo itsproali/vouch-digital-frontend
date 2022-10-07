@@ -17,7 +17,7 @@ const ViewClients = () => {
     const getTotalClient = async () => {
       setLoading(true);
       const { data } = await apiClient.get("/client/total");
-      setTotalPage(Math.ceil(data?.data / 15));
+      setTotalPage(Math.ceil(data?.data / 5)); // For Testing Pagination Used 5 data per page
       setLoading(false);
     };
     getTotalClient();
@@ -203,8 +203,8 @@ const ViewClients = () => {
             <button
               key={page + 1}
               onClick={() => setCurrentPage(page)}
-              className={`py-2 px-4 rounded-lg duration-300 ${
-                page === currentPage ? "bg-primary text-white" : "text-neutral"
+              className={`py-2 px-4 rounded-lg duration-300 bg-primary bg-opacity-10 ${
+                page === currentPage ? "bg-opacity-100 text-white" : "text-neutral hover:bg-opacity-20"
               } `}
             >
               {page + 1}

@@ -8,9 +8,11 @@ import apiClient from "../../../hooks/apiClient";
 import { useNavigate } from "react-router-dom";
 
 const AddClient = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Handle Add new Client
   const handleAddClient = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -21,14 +23,16 @@ const AddClient = () => {
     const person = e.target.person.value;
     const facilitator = e.target.facilitator.value;
     const formData = new FormData();
-    formData.append("file", image);
-    formData.append("upload_preset", "vouch_digital");
-
-    const res = await axios.post(
-      `https://api.cloudinary.com/v1_1/itsproali/image/upload`,
-      formData
-    );
-    const logo = res?.data?.url;
+    let logo;
+    if (image) {
+      formData.append("file", image);
+      formData.append("upload_preset", "vouch_digital");
+      const res = await axios.post(
+        `https://api.cloudinary.com/v1_1/itsproali/image/upload`,
+        formData
+      );
+      logo = res?.data?.url;
+    }
     const details = {
       companyName,
       email,
@@ -42,8 +46,8 @@ const AddClient = () => {
     const { data } = await apiClient.post("/client", details);
     setLoading(false);
     if (data.success) {
-      Swal.fire("Success..!", "Client Added Successfully", "success");
-      navigate("/")
+      Swal.fire("Success..!", data.message, "success");
+      navigate("/");
     }
   };
 
