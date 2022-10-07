@@ -1,14 +1,14 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://vouch-digital-backend.onrender.com",
 });
 
 apiClient.interceptors.request.use(
   function (config) {
     if (!config.headers.authorization) {
       config.headers.authorization = `Bearer ${localStorage.getItem(
-        "accessToken"
+        "token"
       )}`;
     }
     return config;

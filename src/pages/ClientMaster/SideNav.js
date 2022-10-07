@@ -12,7 +12,7 @@ const SideNav = () => {
 
   const handleLogout = () => {
     signOut(auth);
-    localStorage.deleteItem("token");
+    localStorage.removeItem("token");
   };
 
   if (loading) {
